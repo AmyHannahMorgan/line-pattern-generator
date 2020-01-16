@@ -83,9 +83,11 @@ class PathSegment {
   }
   
   const canvas = document.querySelector('#canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
   const ctx = canvas.getContext('2d');
   
-  const pathWidth = 10;
+  const pathWidth = 20;
   ctx.lineWidth = pathWidth / 2
   
   const xSegments = canvas.width / pathWidth;
@@ -158,7 +160,7 @@ class PathSegment {
       }
   }
 
-  // buildPaths();
+  buildPaths();
   
   function buildPaths() {
     let paths = [];
@@ -223,6 +225,8 @@ class PathSegment {
       paths.push(currPath);
       ctx.stroke();
     }
+
+    return paths;
   }
   
   function getPathStart(){
