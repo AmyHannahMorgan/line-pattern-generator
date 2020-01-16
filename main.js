@@ -119,12 +119,47 @@ class PathSegment {
       let tolerance = Math.random();
       let incriment = 0;
       let end = false;
-      let currPath = [];
+      let currPath = [currNode];
       
       ctx.beginPath();
       ctx.moveTo(currNode.centerX, currNode.centerY)
       while(!end) {
         let direction = RNG(0,8);
+
+        switch(direction) {
+            case 0:
+                currNode = currNode.n;
+                ctx.lineTo(currNode.centerX, currNode.centerY);
+                break;
+            case 1:
+                currNode = currNode.ne;
+                ctx.lineTo(currNode.centerX, currNode.centerY);
+                break;
+            case 2:
+                currNode = currNode.e;
+                ctx.lineTo(currNode.centerX, currNode.centerY);
+                break;
+            case 3:
+                currNode = currNode.se;
+                ctx.lineTo(currNode.centerX, currNode.centerY);
+                break;
+            case 4:
+                currNode = currNode.s;
+                ctx.lineTo(currNode.centerX, currNode.centerY);
+                break;
+            case 5:
+                currNode = currNode.sw;
+                ctx.lineTo(currNode.centerX, currNode.centerY);
+                break;
+            case 6:
+                currNode = currNode.w;
+                ctx.lineTo(currNode.centerX, currNode.centerY);
+                break;
+            case 7:
+                currNode = currNode.nw;
+                ctx.lineTo(currNode.centerX, currNode.centerY);
+                break;
+        }
       }
     }
   }
