@@ -85,11 +85,12 @@ class PathSegment {
   const canvas = document.querySelector('#canvas');
   const ctx = canvas.getContext('2d');
   
-  const pathWidth = 20;
+  const pathWidth = 10;
   ctx.lineWidth = pathWidth / 2
   
   const xSegments = canvas.width / pathWidth;
   const ySegments = canvas.height / pathWidth;
+  const minHops = Math.round(((xSegments + ySegments) / 2) / 10);
   //debug lines
   // ctx.beginPath();
   // for(let i = 1; i < xSegments; i++) {
@@ -207,7 +208,7 @@ class PathSegment {
             break;
         }
         
-        if(currPath.length >= 3){
+        if(currPath.length >= minHops){
           if(test >= tolerance) {
               end = true
           }
