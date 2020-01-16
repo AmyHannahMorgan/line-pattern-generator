@@ -69,6 +69,7 @@ class PathSegment {
   const ctx = canvas.getContext('2d');
   
   const pathWidth = 20;
+  ctx.lineWidth = pathWidth / 2
   
   const xSegments = canvas.width / pathWidth;
   const ySegments = canvas.height / pathWidth;
@@ -184,16 +185,19 @@ class PathSegment {
 
         if(northCheck && southCheck && eastCheck && westCheck && nWestCheck && nEastCheck && sWestCheck && sEastCheck) {
             end = true;
+            break;
         }
         
-        if(test >= tolerance) {
-            end = true
-        }
-        else {
-            if(incriment === 0) {
-                incriment = Math.random() / 10;
-            }
-            else incriment += incriment;
+        if(currPath.length >= 3){
+          if(test >= tolerance) {
+              end = true
+          }
+          else {
+              if(incriment === 0) {
+                  incriment = Math.random() / 10;
+              }
+              else incriment += incriment;
+          }
         }
       }
       paths.push(currPath);
