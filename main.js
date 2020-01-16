@@ -16,6 +16,8 @@ class PathSegment {
       this.ne = null
       this.sw = null
       this.se = null
+
+      this.entranceDirection = null;
     }
 
     setDirection(direction, value) {
@@ -51,17 +53,32 @@ class PathSegment {
 
     get directions() {
       let array = []
-
-      this.n !== null && !this.n.visited ? array.push(this.n) : null;
-      this.s !== null && !this.s.visited ? array.push(this.s) : null;
-      this.e !== null && !this.e.visited ? array.push(this.e) : null;
-      this.w !== null && !this.w.visited ? array.push(this.w) : null;
-      this.nw !== null && !this.nw.visited ? array.push(this.nw) : null;
-      this.ne !== null && !this.ne.visited ? array.push(this.ne) : null;
-      this.sw !== null && !this.sw.visited ? array.push(this.sw) : null;
-      this.se !== null && !this.se.visited ? array.push(this.se) : null;
+      if(this.entranceDirection === null) {
+        this.n !== null && !this.n.visited ? array.push(this.n) : null;
+        this.s !== null && !this.s.visited ? array.push(this.s) : null;
+        this.e !== null && !this.e.visited ? array.push(this.e) : null;
+        this.w !== null && !this.w.visited ? array.push(this.w) : null;
+        this.nw !== null && !this.nw.visited ? array.push(this.nw) : null;
+        this.ne !== null && !this.ne.visited ? array.push(this.ne) : null;
+        this.sw !== null && !this.sw.visited ? array.push(this.sw) : null;
+        this.se !== null && !this.se.visited ? array.push(this.se) : null;
+      }
+      else {
+        this.n !== null && !this.n.visited && (this.entranceDirection === 's' || this.entranceDirection === 'se' || this.entranceDirection === 'sw') ? array.push(this.n) : null;
+        this.s !== null && !this.s.visited && (this.entranceDirection === 'n' || this.entranceDirection === 'ne' || this.entranceDirection === 'nw') ? array.push(this.s) : null;
+        this.e !== null && !this.e.visited && (this.entranceDirection === 'w' || this.entranceDirection === 'nw' || this.entranceDirection === 'sw') ? array.push(this.e) : null;
+        this.w !== null && !this.w.visited && (this.entranceDirection === 'e' || this.entranceDirection === 'ne' || this.entranceDirection === 'se') ? array.push(this.w) : null;
+        this.nw !== null && !this.nw.visited && (this.entranceDirection === 'se' || this.entranceDirection === 's' || this.entranceDirection === 'e') ? array.push(this.nw) : null;
+        this.ne !== null && !this.ne.visited && (this.entranceDirection === 'sw' || this.entranceDirection === 's' || this.entranceDirection === 'w') ? array.push(this.ne) : null;
+        this.sw !== null && !this.sw.visited && (this.entranceDirection === 'ne' || this.entranceDirection === 'n' || this.entranceDirection === 'e') ? array.push(this.sw) : null;
+        this.se !== null && !this.se.visited && (this.entranceDirection === 'nw' || this.entranceDirection === 'n' || this.entranceDirection === 'w') ? array.push(this.se) : null;
+      }
 
       return array;
+    }
+
+    set entrance(direction) {
+      this.entranceDirection = direction;
     }
   }
   
@@ -140,7 +157,7 @@ class PathSegment {
       }
   }
 
-  buildPaths();
+  // buildPaths();
   
   function buildPaths() {
     let paths = [];
@@ -166,6 +183,8 @@ class PathSegment {
           end = true;
           break;
         }
+
+        nextNode.entrance = getEntrance(currNode, nextNode);
 
         currNode = nextNode;
         ctx.lineTo(currNode.centerX, currNode.centerY);
@@ -229,6 +248,26 @@ class PathSegment {
     }
     
     return flag;
+  }
+
+  function getEntrance(parent, child) {
+    let string = ''
+
+    if(parent.y > child.y) {
+      string += 's';
+    }
+    else if (parent.y < child.y) {
+      string += 'n';
+    }
+
+    if(parent.x > child.x) {
+      string += 'e';
+    }
+    else if(parent.x < child.x) {
+      string += 'w';
+    }
+
+    return string;
   }
   
   function RNG(min, max) {
