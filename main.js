@@ -48,6 +48,21 @@ class PathSegment {
                 throw `ValueError: ${direction} is not a valid direction`;
         }
     }
+
+    get directions() {
+      let array = []
+
+      this.n !== null && !this.n.visited ? array.push(this.n) : null;
+      this.s !== null && !this.s.visited ? array.push(this.s) : null;
+      this.e !== null && !this.e.visited ? array.push(this.e) : null;
+      this.w !== null && !this.w.visited ? array.push(this.w) : null;
+      this.nw !== null && !this.nw.visited ? array.push(this.nw) : null;
+      this.ne !== null && !this.ne.visited ? array.push(this.ne) : null;
+      this.sw !== null && !this.sw.visited ? array.push(this.sw) : null;
+      this.se !== null && !this.se.visited ? array.push(this.se) : null;
+
+      return array;
+    }
   }
   
   const canvas = document.querySelector('#canvas');
@@ -57,6 +72,20 @@ class PathSegment {
   
   const xSegments = canvas.width / pathWidth;
   const ySegments = canvas.height / pathWidth;
+  //debug lines
+  ctx.beginPath();
+  for(let i = 1; i < xSegments; i++) {
+    ctx.moveTo(i * pathWidth, 0);
+    ctx.lineTo(i * pathWidth, canvas.height);
+  }
+  for(let i = 1; i < ySegments; i++) {
+    ctx.moveTo(0, i * pathWidth);
+    ctx.lineTo(canvas.width, i * pathWidth);
+  }
+  ctx.strokeStyle = 'red';
+  ctx.stroke();
+  ctx.strokeStyle = 'black';
+
   const pathSegments = [];
   
   for(let x = 0; x < xSegments; x++) {
@@ -128,42 +157,44 @@ class PathSegment {
       ctx.beginPath();
       ctx.moveTo(currNode.centerX, currNode.centerY)
       while(!end) {
-        let found = false;
-        let nextNode = null;
-        while(!found) {
-            let direction = RNG(0,8);
-    
-            switch(direction) {
-                case 0:
-                    nextNode = currNode.n;
-                    break;
-                case 1:
-                    nextNode = currNode.ne;
-                    break;
-                case 2:
-                    nextNode = currNode.e;
-                    break;
-                case 3:
-                    nextNode = currNode.se;
-                    break;
-                case 4:
-                    nextNode = currNode.s;
-                    break;
-                case 5:
-                    nextNode = currNode.sw;
-                    break;
-                case 6:
-                    nextNode = currNode.w;
-                    break;
-                case 7:
-                    nextNode = currNode.nw;
-                    break;
-            }
+        // let found = false;
+        let directions = currNode.directions;
+        let nextNode = directions[RNG(0, directions.length)];
 
-            if(nextNode !== null && !nextNode.visited) {
-                found = true;
-            }
-        }
+        // while(!found) {
+        //     let direction = RNG(0,8);
+    
+        //     switch(direction) {
+        //         case 0:
+        //             nextNode = currNode.n;
+        //             break;
+        //         case 1:
+        //             nextNode = currNode.ne;
+        //             break;
+        //         case 2:
+        //             nextNode = currNode.e;
+        //             break;
+        //         case 3:
+        //             nextNode = currNode.se;
+        //             break;
+        //         case 4:
+        //             nextNode = currNode.s;
+        //             break;
+        //         case 5:
+        //             nextNode = currNode.sw;
+        //             break;
+        //         case 6:
+        //             nextNode = currNode.w;
+        //             break;
+        //         case 7:
+        //             nextNode = currNode.nw;
+        //             break;
+        //     }
+
+        //     if(nextNode !== null && !nextNode.visited) {
+        //         found = true;
+        //     }
+        // }
         currNode = nextNode;
         ctx.lineTo(currNode.centerX, currNode.centerY);
         currPath.push(currNode);
