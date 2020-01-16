@@ -68,23 +68,23 @@ class PathSegment {
   const canvas = document.querySelector('#canvas');
   const ctx = canvas.getContext('2d');
   
-  const pathWidth = 100;
+  const pathWidth = 20;
   
   const xSegments = canvas.width / pathWidth;
   const ySegments = canvas.height / pathWidth;
   //debug lines
-  ctx.beginPath();
-  for(let i = 1; i < xSegments; i++) {
-    ctx.moveTo(i * pathWidth, 0);
-    ctx.lineTo(i * pathWidth, canvas.height);
-  }
-  for(let i = 1; i < ySegments; i++) {
-    ctx.moveTo(0, i * pathWidth);
-    ctx.lineTo(canvas.width, i * pathWidth);
-  }
-  ctx.strokeStyle = 'red';
-  ctx.stroke();
-  ctx.strokeStyle = 'black';
+  // ctx.beginPath();
+  // for(let i = 1; i < xSegments; i++) {
+  //   ctx.moveTo(i * pathWidth, 0);
+  //   ctx.lineTo(i * pathWidth, canvas.height);
+  // }
+  // for(let i = 1; i < ySegments; i++) {
+  //   ctx.moveTo(0, i * pathWidth);
+  //   ctx.lineTo(canvas.width, i * pathWidth);
+  // }
+  // ctx.strokeStyle = 'red';
+  // ctx.stroke();
+  // ctx.strokeStyle = 'black';
 
   const pathSegments = [];
   
@@ -139,7 +139,7 @@ class PathSegment {
       }
   }
 
-//   buildPaths();
+  buildPaths();
   
   function buildPaths() {
     let paths = [];
@@ -161,40 +161,11 @@ class PathSegment {
         let directions = currNode.directions;
         let nextNode = directions[RNG(0, directions.length)];
 
-        // while(!found) {
-        //     let direction = RNG(0,8);
-    
-        //     switch(direction) {
-        //         case 0:
-        //             nextNode = currNode.n;
-        //             break;
-        //         case 1:
-        //             nextNode = currNode.ne;
-        //             break;
-        //         case 2:
-        //             nextNode = currNode.e;
-        //             break;
-        //         case 3:
-        //             nextNode = currNode.se;
-        //             break;
-        //         case 4:
-        //             nextNode = currNode.s;
-        //             break;
-        //         case 5:
-        //             nextNode = currNode.sw;
-        //             break;
-        //         case 6:
-        //             nextNode = currNode.w;
-        //             break;
-        //         case 7:
-        //             nextNode = currNode.nw;
-        //             break;
-        //     }
+        if(nextNode === undefined) {
+          end = true;
+          break;
+        }
 
-        //     if(nextNode !== null && !nextNode.visited) {
-        //         found = true;
-        //     }
-        // }
         currNode = nextNode;
         ctx.lineTo(currNode.centerX, currNode.centerY);
         currPath.push(currNode);
@@ -224,8 +195,8 @@ class PathSegment {
             }
             else incriment += incriment;
         }
-        paths.push(currPath);
       }
+      paths.push(currPath);
       ctx.stroke();
     }
   }
