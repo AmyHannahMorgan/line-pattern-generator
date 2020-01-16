@@ -53,7 +53,7 @@ class PathSegment {
   const canvas = document.querySelector('#canvas');
   const ctx = canvas.getContext('2d');
   
-  const pathWidth = 10;
+  const pathWidth = 100;
   
   const xSegments = canvas.width / pathWidth;
   const ySegments = canvas.height / pathWidth;
@@ -109,13 +109,17 @@ class PathSegment {
           }
       }
   }
+
+//   buildPaths();
   
   function buildPaths() {
     let paths = [];
     
     while(!checkPaths()) {
-      let pathStart = getPathStart();
-      let currNode = pathSegments[pathStart[0]][pathStart[1]];
+      let currNode = getPathStart();
+      currNode.visited = true;
+      console.log(currNode);
+
       let tolerance = Math.random();
       let incriment = 0;
       let end = false;
@@ -124,54 +128,87 @@ class PathSegment {
       ctx.beginPath();
       ctx.moveTo(currNode.centerX, currNode.centerY)
       while(!end) {
-        let direction = RNG(0,8);
+        let found = false;
+        let nextNode = null;
+        while(!found) {
+            let direction = RNG(0,8);
+    
+            switch(direction) {
+                case 0:
+                    nextNode = currNode.n;
+                    break;
+                case 1:
+                    nextNode = currNode.ne;
+                    break;
+                case 2:
+                    nextNode = currNode.e;
+                    break;
+                case 3:
+                    nextNode = currNode.se;
+                    break;
+                case 4:
+                    nextNode = currNode.s;
+                    break;
+                case 5:
+                    nextNode = currNode.sw;
+                    break;
+                case 6:
+                    nextNode = currNode.w;
+                    break;
+                case 7:
+                    nextNode = currNode.nw;
+                    break;
+            }
 
-        switch(direction) {
-            case 0:
-                currNode = currNode.n;
-                ctx.lineTo(currNode.centerX, currNode.centerY);
-                break;
-            case 1:
-                currNode = currNode.ne;
-                ctx.lineTo(currNode.centerX, currNode.centerY);
-                break;
-            case 2:
-                currNode = currNode.e;
-                ctx.lineTo(currNode.centerX, currNode.centerY);
-                break;
-            case 3:
-                currNode = currNode.se;
-                ctx.lineTo(currNode.centerX, currNode.centerY);
-                break;
-            case 4:
-                currNode = currNode.s;
-                ctx.lineTo(currNode.centerX, currNode.centerY);
-                break;
-            case 5:
-                currNode = currNode.sw;
-                ctx.lineTo(currNode.centerX, currNode.centerY);
-                break;
-            case 6:
-                currNode = currNode.w;
-                ctx.lineTo(currNode.centerX, currNode.centerY);
-                break;
-            case 7:
-                currNode = currNode.nw;
-                ctx.lineTo(currNode.centerX, currNode.centerY);
-                break;
+            if(nextNode !== null && !nextNode.visited) {
+                found = true;
+            }
         }
+        currNode = nextNode;
+        ctx.lineTo(currNode.centerX, currNode.centerY);
+        currPath.push(currNode);
+        currNode.visited = true;
+
+        let northCheck = currNode.n === null || currNode.n.visited === true ? true : false;
+        let southCheck = currNode.s === null || currNode.s.visited === true ? true : false;
+        let eastCheck = currNode.e === null || currNode.e.visited === true ? true : false;
+        let westCheck = currNode.w === null || currNode.w.visited === true ? true : false;
+        let nWestCheck = currNode.nw === null || currNode.nw.visited === true ? true : false;
+        let nEastCheck = currNode.ne === null || currNode.ne.visited === true ? true : false;
+        let sWestCheck = currNode.sw === null || currNode.sw.visited === true ? true : false;
+        let sEastCheck = currNode.se === null || currNode.se.visited === true ? true : false;
+
+        let test = Math.random() + incriment;
+
+        if(northCheck && southCheck && eastCheck && westCheck && nWestCheck && nEastCheck && sWestCheck && sEastCheck) {
+            end = true;
+        }
+        
+        if(test >= tolerance) {
+            end = true
+        }
+        else {
+            if(incriment === 0) {
+                incriment = Math.random() / 10;
+            }
+            else incriment += incriment;
+        }
+        paths.push(currPath);
       }
+      ctx.stroke();
     }
   }
   
   function getPathStart(){
-    let posX = RNG(0, xSegments);
-    let posY = RNG(0, xSegments);
-    
-    if(!pathSegments[posX][posY].visited) {
-      return [posX, posY];
+    let unvisited = [];
+    for(let x = 0; x < pathSegments.length; x++) {
+        for(let y = 0; y < pathSegments[x].length; y++) {
+            if(!pathSegments[x][y].visited) {
+                unvisited.push(pathSegments[x][y]);
+            }
+        }
     }
-    else return getPathStart();
+    return unvisited[RNG(0, unvisited.length)];
   }
   
   function checkPaths() {
