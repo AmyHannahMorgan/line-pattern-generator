@@ -88,7 +88,10 @@ class PathSegment {
   const ctx = canvas.getContext('2d');
   
   const pathWidth = 20;
-  ctx.lineWidth = pathWidth / 2
+  ctx.lineWidth = pathWidth / 2;
+  ctx.strokeStyle = '#333333';
+  ctx.fill = '#222222';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   
   const xSegments = canvas.width / pathWidth;
   const ySegments = canvas.height / pathWidth;
