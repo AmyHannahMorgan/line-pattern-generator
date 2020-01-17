@@ -89,7 +89,8 @@ class PathSegment {
   canvas.height = params.has('height') ? parseInt(params.get('height')) : document.documentElement.clientHeight;
   const ctx = canvas.getContext('2d');
   
-  const pathWidth = 20;
+  const magnitude = params.has('magnitude') ? parseInt(params.get('magnitude')) : 1;
+  const pathWidth = params.has('lineWidth') ? parseInt(params.get('lineWidth')) : getCommonFactor(canvas.width, canvas.height, magnitude);
   ctx.lineWidth = pathWidth / 2;
   ctx.strokeStyle = '#333333';
   ctx.fill = '#222222';
@@ -278,6 +279,32 @@ class PathSegment {
     }
 
     return string;
+  }
+
+  function getCommonFactor(num1, num2, multiple) {
+    let factor = 4;
+    if(num1 !== num2) {
+      let max = Math.max(num1, num2);
+      let min = Math.min(num1, num2);
+      let flag = false;
+
+      while(!flag) {
+        if(min % (factor * multiple) === 0 && max % (factor * multiple) === 0){
+          flag = true;
+        }
+        else factor++;
+      }
+    }
+    else {
+      let flag = false;
+      while(!flag) {
+        if(num1 % factor === 0 && num1 % (factor * multiple) === 0) {
+          flag = true
+        }
+        else factor++;
+      }
+    }
+    return factor * multiple;
   }
   
   function RNG(min, max) {
