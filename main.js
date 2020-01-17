@@ -81,10 +81,12 @@ class PathSegment {
       this.entranceDirection = direction;
     }
   }
+
+  const params = new URLSearchParams(window.location.search);
   
   const canvas = document.querySelector('#canvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = params.has('width') ? parseInt(params.get('width')) : document.documentElement.clientWidth;
+  canvas.height = params.has('height') ? parseInt(params.get('height')) : document.documentElement.clientHeight;
   const ctx = canvas.getContext('2d');
   
   const pathWidth = 20;
