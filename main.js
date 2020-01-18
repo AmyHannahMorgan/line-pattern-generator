@@ -288,14 +288,25 @@ class PathSegment {
     if(num1 !== num2) {
       let max = Math.max(num1, num2);
       let min = Math.min(num1, num2);
-      let flag = false;
+      let commonFactors = [];
 
-      while(!flag) {
-        if(min % (factor * multiple) === 0 && max % (factor * multiple) === 0){
-          flag = true;
+      for(let i = 0; i < max; i++) {
+        if(min % i === 0 && max % i === 0) {
+          commonFactors.push(i);
         }
-        else factor++;
       }
+
+      if(commonFactors[commonFactors.length - 1] > (max + min) / 2 * 0.05) {
+        let newFactors = []
+        for(let i = 0; i < commonFactors.length; i++) {
+          if(!commonFactors[i] <= (max + min) / 2 * 0.05) {
+            newFactors.push(commonFactors[i]);
+          }
+        }
+
+        return newFactors[newFactors.length - 1] * multiple;
+      }
+      else return commonFactors[commonFactors.length - 1] * multiple;
     }
     else {
       let flag = false;
