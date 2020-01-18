@@ -1,3 +1,6 @@
+/* simple customisable script to generate PCB-esque line patterns
+ * made by Amy Morgan (@AmyHMorgan or @UnicornNukes) */
+
 class PathSegment {
     constructor(x, y, width) {
       this.visited = false;
