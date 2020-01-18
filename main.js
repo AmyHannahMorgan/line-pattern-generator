@@ -92,9 +92,11 @@ class PathSegment {
   const magnitude = params.has('magnitude') ? parseInt(params.get('magnitude')) : 1;
   const pathWidth = params.has('segmentWidth') ? parseInt(params.get('segmentWidth')) : getCommonFactor(canvas.width, canvas.height, magnitude);
   ctx.lineWidth = pathWidth / 2;
-  ctx.strokeStyle = '#333333';
-  ctx.fill = '#222222';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = params.has('lineColor') ? `#${params.get('lineColor')}` : 'black';
+  if(params.has('backgroundColor')) {
+    ctx.fill = `#${params.get('backgroundColor')}`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
   
   const xSegments = canvas.width / pathWidth;
   const ySegments = canvas.height / pathWidth;
