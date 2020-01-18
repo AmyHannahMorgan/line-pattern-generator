@@ -85,12 +85,12 @@ class PathSegment {
   const params = new URLSearchParams(window.location.search);
   
   const canvas = document.querySelector('#canvas');
-  canvas.width = params.has('width') ? parseInt(params.get('width')) : document.documentElement.clientWidth;
-  canvas.height = params.has('height') ? parseInt(params.get('height')) : document.documentElement.clientHeight;
+  canvas.width = params.has('width') ? floorPrime(parseInt(params.get('width'))) : floorPrime(document.documentElement.clientWidth);
+  canvas.height = params.has('height') ? floorPrime(parseInt(params.get('height'))) : floorPrime(document.documentElement.clientHeight);
   const ctx = canvas.getContext('2d');
   
   const magnitude = params.has('magnitude') ? parseInt(params.get('magnitude')) : 1;
-  const pathWidth = params.has('lineWidth') ? parseInt(params.get('lineWidth')) : getCommonFactor(canvas.width, canvas.height, magnitude);
+  const pathWidth = params.has('segmentWidth') ? parseInt(params.get('segmentWidth')) : getCommonFactor(canvas.width, canvas.height, magnitude);
   ctx.lineWidth = pathWidth / 2;
   ctx.strokeStyle = '#333333';
   ctx.fill = '#222222';
@@ -305,6 +305,22 @@ class PathSegment {
       }
     }
     return factor * multiple;
+  }
+
+  function floorPrime(number) {
+    let square = Math.sqrt(number);
+    let flag = true;
+    for(let i = 2; i < square; i++) {
+      if(number % i === 0) {
+        flag = false;
+        break;
+      }
+    }
+
+    if(flag) {
+      return (Math.floor(number / 10) * 10);
+    }
+    else return number;
   }
   
   function RNG(min, max) {
