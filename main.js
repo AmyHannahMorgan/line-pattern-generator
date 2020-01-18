@@ -87,7 +87,7 @@ class PathSegment {
   const canvas = document.querySelector('#canvas');
   canvas.width = params.has('width') ? floorPrime(parseInt(params.get('width'))) : floorPrime(document.documentElement.clientWidth);
   canvas.height = params.has('height') ? floorPrime(parseInt(params.get('height'))) : floorPrime(document.documentElement.clientHeight);
-  if(canvas.width % 2 !== 0 || canvas.height % 2 !== 0) {
+  if(canvas.width % 2 !== canvas.height % 2) {
     canvas.height += canvas.height % 2;
     canvas.width += canvas.width % 2;
   }
