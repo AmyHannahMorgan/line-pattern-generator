@@ -311,7 +311,7 @@ class PathSegment {
     else {
       let flag = false;
       while(!flag) {
-        if(num1 % factor === 0 && num1 % (factor * multiple) === 0) {
+        if(num1 % factor === 0 && num1 % (factor * multiple) === 0 && (factor * multiple) >= (num1 + num2) / 2 * 0.05) {
           flag = true
         }
         else factor++;
