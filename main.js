@@ -94,7 +94,7 @@ class PathSegment {
   ctx.lineWidth = pathWidth / 2;
   ctx.strokeStyle = params.has('lineColor') ? `#${params.get('lineColor')}` : 'black';
   if(params.has('backgroundColor')) {
-    ctx.fill = `#${params.get('backgroundColor')}`;
+    ctx.fillStyle = `#${params.get('backgroundColor')}`;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
   
